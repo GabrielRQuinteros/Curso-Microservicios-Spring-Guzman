@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: msvc-products
+        uri: lb://msvc-products
+        # ESTAS SON CONDICIONES QUE SE LES PONEN A LAS PETICIONES PARA QUE SE PUEDA ACCEDER A LAS RUTAS DEL MICRO-SERVICIO.
+        # SI SE CUMPLE ALGUNA DE LAS CONDICIONES DE ABAJO. LANZA 404 Not Found.
+        predicates:
+        - Path=/api/products/**
+        # MIRARA ACA ABAJO TAMBIEN ACEPTA EXPRESIONES REGULARES. ESO DE ABAJO ME PIDE QUE EL TOKEN SEA UNO O MAS DÍGITOS.
+        #- Header= token, /d+
+        #- Header= token, 12345
+        #- Method= GET, POST
+        #- Query= color, verde
+        #- Cookie= color, azul
+        filters:
+        - StripPrefix=2
+        # AGREGO UNA COOKIE de Nombre SampleCookie que solo se agrega a los endpoints de los micro-servicios de productos 
+        - name: SampleCookie
+          args:
+            message: Hola mi mensaje personalizado para productos
+            name: user
+            value: Gabriel
+      - id: msvc-items
+        uri: lb://msvc-items
+        predicates:
+        - Path=/api/items/**
+        filters:
+        - StripPrefix=2
+        - AddRequestHeader= token-request, asdasdtokenasdasd
+        - AddResponseHeader= token-response, 123456
+        - AddRequestParameter= name, Gabriel
+        # Para ver mas Filtros ya hechos en Spring de base ir a : https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway/gatewayfilter-factories.html
+        # Esto esta muy bueno por ejemplo para agregar un filtro de UTF-8 para poder recibir las requets y mandar response con caracteres especiales.
+#        - SetResponseHeader= Content-Type, text/plain

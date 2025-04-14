@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "config.msvc-product.base.url",
+  "type": "java.lang.String",
+  "description": "Url base de los microservicios de productos"
+}]}

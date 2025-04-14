@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "eureka-server"
+		},
+		{
+			"path": "msvc-items"
+		},
+		{
+			"path": "msvc-product"
+		},
+		{
+			"name": "msvc-gateway-server",
+			"path": "msvc-gateway-server"
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic",
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}
