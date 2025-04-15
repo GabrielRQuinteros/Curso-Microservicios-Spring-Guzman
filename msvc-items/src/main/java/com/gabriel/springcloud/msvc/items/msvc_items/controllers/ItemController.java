@@ -1,6 +1,7 @@
 package com.gabriel.springcloud.msvc.items.msvc_items.controllers;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,7 +9,10 @@ import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +37,32 @@ public class ItemController {
     private final ItemService service;
     private final CircuitBreakerFactory cbf;
     private final Logger logger = LoggerFactory.getLogger( ItemController.class );
+
+    /// Esta es una property que es importada desde el servidor de configuraciones
+    @Value("${configuracion.texto}")
+    private String texto;
+
+    @Autowired
+    private Environment env;
+
+
+    @GetMapping("/fetch-configs")
+    public ResponseEntity<?> fetchCpnfigs(@Value("${server.port}") String puerto) {
+        Map<String, String> json = new HashMap<>();
+        json.put("text", texto);
+        json.put("port", puerto);
+        logger.info("PUERTO: " + puerto );
+        logger.info("TEXTO: " + texto );
+
+
+        if( env.getActiveProfiles().length > 0 && env.getActiveProfiles()[0].equals("dev") ) {
+            json.put("autor", env.getProperty("configuracion.autor.nombre") );
+            json.put("email", env.getProperty("configuracion.autor.email") );
+        }
+
+        return ResponseEntity.ok(json);
+    }
+    
 
 
     public ItemController(CircuitBreakerFactory cbf, ItemService service) {
