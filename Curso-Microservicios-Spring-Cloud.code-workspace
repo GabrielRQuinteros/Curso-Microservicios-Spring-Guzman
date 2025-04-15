@@ -1,25 +1,28 @@
 {
-	"folders": [
-		{
-			"path": "eureka-server"
-		},
-		{
-			"path": "msvc-items"
-		},
-		{
-			"path": "msvc-product"
-		},
-		{
-			"name": "msvc-gateway-server",
-			"path": "msvc-gateway-server"
-		},
-		{
-			"name": "config-server",
-			"path": "config-server"
-		}
-	],
-	"settings": {
-		"java.compile.nullAnalysis.mode": "automatic",
-		"java.configuration.updateBuildConfiguration": "interactive"
-	}
+  "folders": [
+    {
+      "path": "eureka-server"
+    },
+    {
+      "path": "msvc-items"
+    },
+    {
+      "path": "msvc-product"
+    },
+    {
+      "name": "msvc-gateway-server",
+      "path": "msvc-gateway-server"
+    },
+    {
+      "name": "config-server",
+      "path": "config-server"
+    },
+    {
+      "path": "../config"
+    }
+  ],
+  "settings": {
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "interactive"
+  }
 }
