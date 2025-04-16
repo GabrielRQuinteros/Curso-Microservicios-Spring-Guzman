@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,16 @@ import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
+/**
+ * @RefreshScope es una anotación de Spring que permite actualizar el Environment
+ * en caso de que la configuración del microservicio se modifique, ya sea que esté alojada
+ * en un repositorio Git o en forma local.
+ *
+ * Esto permite que las propiedades se actualicen sin necesidad de reiniciar el servidor.
+ * Es decir, el microservicio (por ejemplo, el de Items) puede aplicar los nuevos valores
+ * de configuración en caliente, sin ser dado de baja.
+ */
+@RefreshScope
 @RestController
 @RequestMapping("")
 public class ItemController {
