@@ -17,7 +17,7 @@ public interface ProductService {
     public List<Product> findAll();
     public Optional<Product> findById( Long id );
     public Product create(CreateProductRequest requesBody) throws InternalServerError;
-    public Product update( UpdateProductRequest requestBody, Long id ) throws InternalServerError, BadRequestException ;
+    public Optional<Product> update( UpdateProductRequest requestBody, Long id ) throws InternalServerError, BadRequestException ;
     public Optional<Product> delete ( Long id ) throws BadRequestException, InternalServerErrorException;
 
 }

@@ -1,10 +1,15 @@
 package com.gabriel.spring.cloud.microservicios.products.msvc_product.entities;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Min;
@@ -39,9 +44,30 @@ public class Product {
     private Double price;
 
     @NotNull
+    @JsonIgnore
     private LocalDateTime created_at;
+
+    @NotNull
+    @JsonIgnore
+    private LocalDateTime updated_at;
 
     @Transient
     private long port;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.created_at = LocalDateTime.now();
+        this.updated_at = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updated_at = LocalDateTime.now();
+    }
+
+
+
+
 
 }

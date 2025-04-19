@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gabriel.springcloud.msvc.items.msvc_items.clients.ProductFeignClient;
+import com.gabriel.springcloud.msvc.items.msvc_items.dtos.requests.CreateProductRequest;
+import com.gabriel.springcloud.msvc.items.msvc_items.dtos.requests.UpdateProductRequest;
 import com.gabriel.springcloud.msvc.items.msvc_items.models.Item;
+import com.gabriel.springcloud.msvc.items.msvc_items.models.Product;
 
 import feign.FeignException;
 
@@ -49,6 +52,22 @@ public class ItemServiceFeign implements ItemService {
         }
     }
 
+    @Override
+    public Product create(CreateProductRequest requestBody) {
+        return this.client.create(requestBody);
+    }
+
+    @Override
+    public Product update(UpdateProductRequest requestBody, Long id) {
+        return this.client.update(requestBody, id);
+    }
+
+    @Override
+    public Product delete(Long id) {
+        return this.client.delete(id);
+    }
+
+    
 
 
 }

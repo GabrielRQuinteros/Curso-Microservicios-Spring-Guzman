@@ -14,6 +14,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import com.gabriel.springcloud.msvc.items.msvc_items.dtos.requests.CreateProductRequest;
+import com.gabriel.springcloud.msvc.items.msvc_items.dtos.requests.UpdateProductRequest;
 import com.gabriel.springcloud.msvc.items.msvc_items.models.Item;
 import com.gabriel.springcloud.msvc.items.msvc_items.models.Product;
 
@@ -71,6 +73,41 @@ public class ItemServiceWebClient implements ItemService{
         //     return Optional.empty();
         // }
 
+    }
+
+    @Override
+    public Product create(CreateProductRequest requestBody) {
+        return this.client.build()
+                            .post()
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .bodyValue(requestBody)
+                            .retrieve()
+                            .bodyToMono(Product.class)
+                            .block();
+    }
+
+    @Override
+    public Product update (UpdateProductRequest requestBody, Long id) {
+        Map<String, Object> params = Map.of("id", id);
+        return this.client.build()
+                            .patch()
+                            .uri("/{id}", params)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .bodyValue(requestBody)
+                            .retrieve()
+                            .bodyToMono(Product.class)
+                            .block();
+    }
+
+    @Override
+    public Product delete (Long id) {
+        Map<String, Object> params = Map.of("id", id);
+        return this.client.build()
+                            .delete()
+                            .uri("/{id}", params)
+                            .retrieve()
+                            .bodyToMono(Product.class)
+                            .block();
     }
 
 

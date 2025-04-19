@@ -1,4 +1,4 @@
-package com.gabriel.spring.cloud.microservicios.products.msvc_product.dtos.requests;
+package com.gabriel.springcloud.msvc.items.msvc_items.dtos.requests;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

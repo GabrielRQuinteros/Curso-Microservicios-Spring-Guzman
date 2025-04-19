@@ -16,19 +16,27 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gabriel.springcloud.msvc.items.msvc_items.dtos.requests.CreateProductRequest;
+import com.gabriel.springcloud.msvc.items.msvc_items.dtos.requests.UpdateProductRequest;
 import com.gabriel.springcloud.msvc.items.msvc_items.models.Item;
 import com.gabriel.springcloud.msvc.items.msvc_items.models.Product;
 import com.gabriel.springcloud.msvc.items.msvc_items.services.ItemService;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import jakarta.validation.constraints.NotNull;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @RefreshScope es una anotación de Spring que permite actualizar el Environment
@@ -179,6 +187,22 @@ public class ItemController {
                                                             );
                                                             return ResponseEntity.ok(itemCortoCircuito);
             } );
+    }
+
+
+    @PostMapping("")
+    public ResponseEntity<?> create( @Validated @RequestBody CreateProductRequest requestBody){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.service.create(requestBody));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> update ( @Validated @RequestBody UpdateProductRequest requestBody, @PathVariable @NotNull Long id ){
+        return ResponseEntity.ok(this.service.update(requestBody, id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete ( @PathVariable @NotNull Long id ) {
+        return ResponseEntity.ok(this.service.delete(id));
     }
     
 

@@ -77,7 +77,10 @@ public class ProductController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> update ( @Validated @RequestBody UpdateProductRequest requestBody, @PathVariable @NotNull Long id ) {
         try {
-            return ResponseEntity.ok( this.service.update(requestBody, id) );
+            Optional<Product> productOpt = this.service.update(requestBody, id);
+            if( productOpt.isPresent() )  
+                return ResponseEntity.ok( this.service.update(requestBody, id) );
+            return ResponseEntity.notFound().build();
         } catch (BadRequestException e ) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (InternalServerError e) {

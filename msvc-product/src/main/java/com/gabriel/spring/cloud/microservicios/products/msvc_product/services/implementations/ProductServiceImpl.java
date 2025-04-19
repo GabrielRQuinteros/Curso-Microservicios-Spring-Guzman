@@ -1,5 +1,6 @@
 package com.gabriel.spring.cloud.microservicios.products.msvc_product.services.implementations;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,10 +68,15 @@ public class ProductServiceImpl implements ProductService{
 
     @Transactional()
     @Override
-    public Product update( UpdateProductRequest requestBody, Long id ) throws BadRequestException, InternalServerErrorException {
+    public Optional<Product> update( UpdateProductRequest requestBody, Long id ) throws BadRequestException, InternalServerErrorException {
         try {
             Optional<Product> productOpt = this.findById(id);
-            return this.repository.save(productOpt.orElseThrow( () -> new BadRequestException( "El producto indicado no0 existe." ) ));
+            if( productOpt.isEmpty() )
+               return Optional.empty();
+            Product product = productOpt.get();
+            product.setName( requestBody.name() );
+            product.setPrice( requestBody.price() );
+            return Optional.of( this.repository.save( product ) );
         } catch( BadRequestException e ){
             throw e;
         } catch (Exception e) {
